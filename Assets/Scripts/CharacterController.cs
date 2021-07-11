@@ -46,9 +46,49 @@ public class CharacterController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+
+
+
     {
-        Vector3 targetPosition = new Vector3 (CurrentTargetPosition.x, transform.position.y, CurrentTargetPosition.z); //the position we want to move towards.
-        Vector3 nextMovePosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime); // the amount we should move towards that positiion
-        rigidBody.MovePosition(nextMovePosition);
+        LookAtTargetPosition(); // always look towards the position we are aiming for.
+        /// if we are still too far away move closer
+        if (Vector3.Distance(transform.position, CurrentTargetPosition) > minDistanceToTarget)
+        {
+            Vector3 targetPosition = new Vector3(CurrentTargetPosition.x, transform.position.y, CurrentTargetPosition.z); //the position we want to move towards.
+            Vector3 nextMovePosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime); // the amount we should move towards that positiion
+            rigidBody.MovePosition(nextMovePosition);
+            currentIdlewaitTime = Time.time + idleTime;
+        }
+        else
+        {
+            // we must be close enough to target position.
+            // we wait a couple of seconds
+            // then find a new position
+            if(Time.time > currentIdlewaitTime)
+            {
+                // lets find a new position
+                CurrentTargetPosition = gameManager.ReturnRandomPositionOnField();
+            }
+        }
+
     }
+    /// <summary>
+    /// Rotates our character to always face the direction we are heading.
+    /// </summary>
+    private void LookAtTargetPosition()
+    {
+        Vector3 directionToLookAt = CurrentTargetPosition - transform.position; //get the direction we should be lookin at
+        directionToLookAt.y = transform.position.y; //don't change the Y position
+        Quaternion rotationOfDirection = Quaternion.LookRotation(directionToLookAt); //  get a rotation that we can use to look towards
+        transform.rotation = rotationOfDirection; // set our current rotation to our rotation to face towards.
+    }
+
+
+    private void OnDrawGizmosSelected()
+    {
+        // draw a blue sphere of the position we are moving towards
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(CurrentTargetPosition, 0.5f);
+    }
+
 }
