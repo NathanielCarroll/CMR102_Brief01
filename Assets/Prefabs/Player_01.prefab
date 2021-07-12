@@ -142,11 +142,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b7887cea8785d34ba9ae654a95ff131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCharacterState: 0
+  gameManager: {fileID: 0}
+  rigidBody: {fileID: 1915111292594860273}
   moveSpeed: 3
   minDistanceToTarget: 1
   idleTime: 2
-  gameManager: {fileID: 0}
-  rigidBody: {fileID: 1915111292594860273}
+  waveTime: 0
+  distanceToStartWavingFrom: 4
+  timeBetweenWaves: 5
 --- !u!136 &3222081201077362610
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -160,7 +164,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &1915111292594860273
 Rigidbody:
   m_ObjectHideFlags: 0

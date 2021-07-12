@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e59862ffa8aa5047a54470dcecbbb29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soccorField: {fileID: 2004299148}
+  soccerField: {fileID: 2004299148}
   moveArea: {x: 6, y: 0, z: 13}
 --- !u!4 &23698080
 Transform:
@@ -831,6 +831,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -6131316348780212789, guid: 42454c6d235bc8d4ca67eece77525e78, type: 3}
+      propertyPath: waveTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6131316348780212789, guid: 42454c6d235bc8d4ca67eece77525e78, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 23698079}
@@ -891,6 +895,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8703759993172402051, guid: 3dadd49a719327b4280c00463a6205b7, type: 3}
+      propertyPath: waveTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8703759993172402051, guid: 3dadd49a719327b4280c00463a6205b7, type: 3}
       propertyPath: gameManager
       value: 

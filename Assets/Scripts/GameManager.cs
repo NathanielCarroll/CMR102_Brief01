@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Transform soccorField; // a reference to our soccor field
+    public Transform soccerField; // a reference to our soccor field
     public Vector3 moveArea; // the Size of our area where we can move
 
     // Start is called before the first frame update
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     public Vector3 ReturnRandomPositionOnField()
     {
         float xPosition = Random.Range(-moveArea.x / 2, moveArea.x / 2); // gives us a random number between negative moveArea X and positive move AreaX
-        float yposition = soccorField.position.y; // our soccor fields y transform position
+        float yposition = soccerField.position.y; // our soccor fields y transform position
         float zposition = Random.Range(-moveArea.z / 2, moveArea.z / 2); // gives us a random number between negative moveArea Z and positive move AreaZ
 
         return new Vector3(xPosition, yposition, zposition);
@@ -40,12 +40,12 @@ public class GameManager : MonoBehaviour
      private void OnDrawGizmosSelected()
     {
         // if the user hasn't put a soccor field in, just get out of this function.
-        if(soccorField == null)
+        if(soccerField == null)
         {
             return;
         }
         Gizmos.color = Color.red; // sets my gizmo to red
-        Gizmos.DrawCube(soccorField.position + new Vector3(0,0.5f,0), moveArea); // draws a cube at the soccor fields position, and to the size of our move area.
+        Gizmos.DrawCube(soccerField.position + new Vector3(0,0.5f,0), moveArea); // draws a cube at the soccer fields position, and to the size of our move area.
     }
 
     
