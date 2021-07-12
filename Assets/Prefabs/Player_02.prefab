@@ -148,8 +148,8 @@ MonoBehaviour:
   moveSpeed: 3
   minDistanceToTarget: 1
   idleTime: 2
-  waveTime: 0
-  distanceToStartWavingFrom: 4
+  waveTime: 2
+  distanceToStartWavingFrom: 2
   timeBetweenWaves: 5
 --- !u!54 &8162158130094836353
 Rigidbody:
