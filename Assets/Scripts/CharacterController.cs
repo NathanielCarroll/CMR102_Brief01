@@ -34,6 +34,8 @@ public class CharacterController : MonoBehaviour
     public float timeBetweenWaves = 5; // the time between when we are allowed to wave again.
     private float currentTimeBetweenWaves; // the current time for our next wave to be initiated
 
+    // fleeing state variables
+    public float distanceThresholdOfPlayer = 5; // the distance that is too close for the player to be to the characters
 
     /// <summary>
     /// Returns the currentTargetPosition
@@ -126,7 +128,33 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     private void HandleFleeingState()
     {
+        if(currentCharacterState != CharacterStates.Fleeing && gameManager.IsPlayerTooCloseToCharacter(transform,distanceThresholdOfPlayer))
+        {
+            // We should be fleeing
+            currentCharacterState = CharacterStates.Fleeing;
+        }
+        else if(currentCharacterState == CharacterStates.Fleeing && gameManager.IsPlayerTooCloseToCharacter(transform, distanceThresholdOfPlayer))
+        {
+            /// if we are still too far away move closer
+            if (currentCharacterState == CharacterStates.Fleeing && Vector3.Distance(transform.position, CurrentTargetPosition) > minDistanceToTarget)
+            {
+                Vector3 targetPosition = new Vector3(CurrentTargetPosition.x, transform.position.y, CurrentTargetPosition.z); //the position we want to move towards.
+                Vector3 nextMovePosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime * 1.5f); // the amount we should move towards that positiion
+                rigidBody.MovePosition(nextMovePosition);
+                currentIdleWaitTime = Time.time + idleTime;
+            }
+            else
+            {
+                CurrentTargetPosition = gameManager.ReturnRandomPositionOnField();
+            }
 
+        }
+        else if(currentCharacterState == CharacterStates.Fleeing && gameManager.IsPlayerTooCloseToCharacter(transform, distanceThresholdOfPlayer) == false)
+        {
+            // if we are still fleeing, then we want to tansition into our roaming state
+            currentCharacterState = CharacterStates.Roaming;
+            currentTargetPosition = gameManager.ReturnRandomPositionOnField();
+        }
     }
 
 
@@ -142,7 +170,7 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     private void HandleWavingState()
     {
-        if(ReturnCharacterTransformToWaveAt() != null && currentCharacterState != CharacterStates.Waving && Time.time > currentTimeBetweenWaves)
+        if(ReturnCharacterTransformToWaveAt() != null && currentCharacterState != CharacterStates.Waving && Time.time > currentTimeBetweenWaves && currentCharacterState != CharacterStates.Fleeing)
         {
             // We should start waving!
             currentCharacterState = CharacterStates.Waving;
