@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
     public Vector3 moveArea; // the Size of our area where we can move
     public Transform arCamera; // reference to our ar camera
 
+    public GameObject soccerballPrefab; // a reference to the soccer ball in our scene
+    private GameObject currentSoccerBallInstance; // the current soccer ball that has been spawned in
+    public Transform aRContentParent; // reference to the overall parent of the ar content
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,6 +73,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns in the soccer ball based on the position provided. if the soccer ball already exists in the world we just want to move it to that new position
+    /// </summary>
+    /// <param name="positionToSpawn"></param>
+    public void SpawnOrMoveSoccerBall(Vector3 positionToSpawn)
+    {
+        if(soccerballPrefab == null)
+        {
+            Debug.LogError("Something is wrong there is no soccer ball assigned in the inspector");
+            return;
+        }
 
+        // if the soccerball isn't assigned in the world yet
+        if(currentSoccerBallInstance == null)
+        {
+            // spawn in and store a reference to our soccerball, and parent it to our ar content parent
+            currentSoccerBallInstance = Instantiate(soccerballPrefab, positionToSpawn, soccerballPrefab.transform.rotation, aRContentParent);
+            currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the soccerball to 0
+            currentSoccerBallInstance.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the angular velocity of the soccerball to 0
+        }
+        else
+        {
+            currentSoccerBallInstance.transform.position = positionToSpawn; // move our soccer ball to the position to spawn
+            currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the soccerball to 0
+            currentSoccerBallInstance.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the angular velocity of the soccerball to 0
+        }
+    }
 
 }

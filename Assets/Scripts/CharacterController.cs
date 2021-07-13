@@ -37,6 +37,9 @@ public class CharacterController : MonoBehaviour
     // fleeing state variables
     public float distanceThresholdOfPlayer = 5; // the distance that is too close for the player to be to the characters
 
+    private Transform currentSoccerBall = null; // reference to the soccer ball
+    public GameObject selfIdentifier; // a reference to our identification colour.
+
     /// <summary>
     /// Returns the currentTargetPosition
     /// And Sets the new current position
@@ -65,6 +68,7 @@ public class CharacterController : MonoBehaviour
         CurrentTargetPosition = gameManager.ReturnRandomPositionOnField(); // get a random starting position
         allCharactersInScene = FindObjectsOfType<CharacterController>(); // find references to all characters in our scene
         currentCharacterState = CharacterStates.Roaming; // Set the character by default to start roaming.
+        selfIdentifier.SetActive(false);
     }
 
     // Update is called once per frame
@@ -234,5 +238,18 @@ public class CharacterController : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(CurrentTargetPosition, 0.5f);
     }
+
+    /// <summary>
+    /// Is called when the soccer ball is spawned in
+    /// </summary>
+    /// <param name="SoccerBall"></param>
+    public void SoccerBallSpawned(Transform SoccerBall)
+    {
+        currentSoccerBall = SoccerBall; // assign the soccerball to our reference
+        CurrentTargetPosition = currentSoccerBall.position; // set our target position to our soccerball
+        currentCharacterState = CharacterStates.Roaming; // using our roaming state to start moving towards our soccerball
+        selfIdentifier.SetActive(true);
+    }
+
 
 }

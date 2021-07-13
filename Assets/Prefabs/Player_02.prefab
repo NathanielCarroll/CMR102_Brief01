@@ -151,6 +151,8 @@ MonoBehaviour:
   waveTime: 2
   distanceToStartWavingFrom: 2
   timeBetweenWaves: 5
+  distanceThresholdOfPlayer: 5
+  selfIdentifier: {fileID: 2381065940101150191}
 --- !u!54 &8162158130094836353
 Rigidbody:
   m_ObjectHideFlags: 0
