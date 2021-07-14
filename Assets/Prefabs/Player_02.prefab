@@ -153,6 +153,9 @@ MonoBehaviour:
   timeBetweenWaves: 5
   distanceThresholdOfPlayer: 5
   selfIdentifier: {fileID: 2381065940101150191}
+  myGoal: {fileID: 0}
+  soccerBallKickForce: 10
+  soccerBallInteractDistance: 0.25
 --- !u!54 &8162158130094836353
 Rigidbody:
   m_ObjectHideFlags: 0
