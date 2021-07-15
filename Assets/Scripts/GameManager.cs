@@ -12,10 +12,21 @@ public class GameManager : MonoBehaviour
     private GameObject currentSoccerBallInstance; // the current soccer ball that has been spawned in
     public Transform aRContentParent; // reference to the overall parent of the ar content
 
+    public int playerOneScore;
+    public int playerTwoScore;
+
+    
+
+    private bool areCharactersRunningAway = false; // are there characters currently running away from the player
+
+
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("New RandomPosition of:" + ReturnRandomPositionOnField());
+        playerOneScore = 0;
+        playerTwoScore = 0; // reset our players score
+       
     }
 
     // Update is called once per frame
@@ -23,6 +34,31 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    
+    public void IncreasePlayerScore(int playerNumber)
+    {
+        if (playerNumber == 1)
+        {
+            playerOneScore++;
+        }
+        else if(playerOneScore == 2)
+        {
+            playerNumber++;
+        }
+        ResetSoccerBall();
+        
+    }
+
+    private void ResetSoccerBall()
+    {
+        currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // reset the velocity of the ball
+        currentSoccerBallInstance.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // reset the angular velocity
+        currentSoccerBallInstance.transform.position = ReturnRandomPositionOnField(); // reset the position of the ball
+    }
+
+
+
     /// <summary>
     /// Returns a random position within our move area/
     /// </summary>
