@@ -65,7 +65,16 @@ public class CharacterController : MonoBehaviour
 
     }
 
-
+    //called each time the script or the game object is disabled
+    private void OnDisable()
+    {
+        if (gameManager != null) // if the game is not null
+        {
+            gameManager.RunningAwayFromPlayer(false); // then telll it there are no characters in range
+        }
+    
+        
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -171,6 +180,7 @@ public class CharacterController : MonoBehaviour
         {
             // We should be fleeing
             currentCharacterState = CharacterStates.Fleeing;
+            gameManager.RunningAwayFromPlayer(true); // we are running away from player
         }
         else if(currentCharacterState == CharacterStates.Fleeing && gameManager.IsPlayerTooCloseToCharacter(transform, distanceThresholdOfPlayer))
         {
@@ -193,6 +203,7 @@ public class CharacterController : MonoBehaviour
             // if we are still fleeing, then we want to tansition into our roaming state
             currentCharacterState = CharacterStates.Roaming;
             currentTargetPosition = gameManager.ReturnRandomPositionOnField();
+            gameManager.RunningAwayFromPlayer(false); // stop running away from player.
         }
     }
 

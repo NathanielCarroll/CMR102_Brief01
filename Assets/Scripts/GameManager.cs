@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     public UIManager uiManager; // a reference to our UI Manager
 
+    public AudioManager audioManager; // a reference to our audio manager
+
     
 
     private bool areCharactersRunningAway = false; // are there characters currently running away from the player
@@ -162,6 +164,38 @@ public class GameManager : MonoBehaviour
         }
 
         uiManager.DisplayScores(true); // display our score on our goals
+
+        if(audioManager != null) // if we have a reference to the audio manager
+        {
+            audioManager.PlayPlayingMusic(); // start playing second track
+        }
     }
+
+    /// <summary>
+    /// a function to handle the characters telling us that the player is too close so play some music
+    /// </summary>
+    /// <param name="isRunningAway"></param>
+    public void RunningAwayFromPlayer(bool isRunningAway)
+    {
+        if(isRunningAway == areCharactersRunningAway) // set our private bool
+        {
+            return;
+        }
+        else
+        {
+            areCharactersRunningAway = isRunningAway; // set our private bool to this value
+        }
+        // if characters are running away in fear
+        if(areCharactersRunningAway == true)
+        {
+            audioManager.PlayFleeingMusic(); // start playing the fleeing music
+        }
+        else
+        {
+            audioManager.PlayPreviousTrack(); // otherwise start playing the last track
+        }
+             
+    }
+
 
 }
