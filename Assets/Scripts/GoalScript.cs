@@ -17,6 +17,7 @@ public class GoalScript : MonoBehaviour
             Debug.Log("Goal Scored");
 
             gameManager.IncreasePlayerScore(playerNumber);
+           
             //I want to increase our characters score
         }
     } 

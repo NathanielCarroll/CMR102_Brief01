@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public int playerOneScore;
     public int playerTwoScore;
 
+    public UIManager uiManager; // a reference to our UI Manager
+
     
 
     private bool areCharactersRunningAway = false; // are there characters currently running away from the player
@@ -26,7 +28,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("New RandomPosition of:" + ReturnRandomPositionOnField());
         playerOneScore = 0;
         playerTwoScore = 0; // reset our players score
-       
+        uiManager.DisplayScores(false); // hide our canvases to start with
+        uiManager.UpdateScores(playerOneScore, playerTwoScore); // Update our players scores 
     }
 
     // Update is called once per frame
@@ -36,20 +39,28 @@ public class GameManager : MonoBehaviour
     }
 
     
+    /// <summary>
+    /// Increase goals scored by players by 1
+    /// </summary>
+    /// <param name="playerNumber"></param>
     public void IncreasePlayerScore(int playerNumber)
     {
         if (playerNumber == 1)
         {
             playerOneScore++;
         }
-        else if(playerOneScore == 2)
+        else if(playerNumber == 2)
         {
-            playerNumber++;
+            playerTwoScore++;
         }
         ResetSoccerBall();
+        uiManager.UpdateScores(playerOneScore, playerTwoScore); // updates the ui score to show our current values
         
     }
 
+    /// <summary>
+    /// resets the positions and velicities
+    /// </summary>
     private void ResetSoccerBall()
     {
         currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // reset the velocity of the ball
@@ -149,6 +160,8 @@ public class GameManager : MonoBehaviour
         {
             mice[i].SoccerBallSpawned(currentSoccerBallInstance.transform);
         }
+
+        uiManager.DisplayScores(true); // display our score on our goals
     }
 
 }
