@@ -107,6 +107,8 @@ GameObject:
   - component: {fileID: -8703759993172402051}
   - component: {fileID: 3222081201077362610}
   - component: {fileID: 1915111292594860273}
+  - component: {fileID: 1639471939}
+  - component: {fileID: 1639471938}
   m_Layer: 0
   m_Name: Player_01
   m_TagString: Untagged
@@ -153,9 +155,10 @@ MonoBehaviour:
   timeBetweenWaves: 5
   distanceThresholdOfPlayer: 5
   selfIdentifier: {fileID: 4191212096907873087}
-  myGoal: {fileID: 0}
+  myGoal: {fileID: 6456370521426129297}
   soccerBallKickForce: 10
   soccerBallInteractDistance: 0.25
+  animationHandler: {fileID: 1639471939}
 --- !u!136 &3222081201077362610
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -186,6 +189,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &1639471939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6456370521426129297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 427249b30612dda4c8ea1b2b3c9f3517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1639471938}
+  currentAnimationState: 0
+--- !u!95 &1639471938
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6456370521426129297}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 1f7dec21f9da23644a7dc78487395bdf, type: 3}
+  m_Controller: {fileID: 9100000, guid: 757fe6747c2010c4abc28ce2d7558af1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &6456370520805172775
 PrefabInstance:
   m_ObjectHideFlags: 0

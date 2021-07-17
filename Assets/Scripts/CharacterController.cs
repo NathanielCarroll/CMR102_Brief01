@@ -44,6 +44,10 @@ public class CharacterController : MonoBehaviour
     public GameObject myGoal; // reference to this characters goal
     public float soccerBallKickForce = 10; // the amount of force the character can use
     public float soccerBallInteractDistance = 0.25f; // if soccerball is close enough than we can kick it
+    public float passingAnimationDelay = 0.5f; // a delay of the soccer animation before they kick
+    private float currentTimeTillPassingAnimationPlays; // the time at which the animation will start
+
+    public AnimationHandler animationHandler; // a reference to our animation handler 
 
     /// <summary>
     /// Returns the currentTargetPosition
@@ -83,6 +87,7 @@ public class CharacterController : MonoBehaviour
         allCharactersInScene = FindObjectsOfType<CharacterController>(); // find references to all characters in our scene
         currentCharacterState = CharacterStates.Roaming; // Set the character by default to start roaming.
         selfIdentifier.SetActive(false);
+        animationHandler.CurrentState = AnimationHandler.AnimationState.Idle; // set our animation to idle
     }
 
     // Update is called once per frame
@@ -122,6 +127,12 @@ public class CharacterController : MonoBehaviour
         {
             if (currentSoccerBall != null)
             {
+                // here we should be running 
+                if(animationHandler.CurrentState != AnimationHandler.AnimationState.Running)
+                {
+                    animationHandler.CurrentState = AnimationHandler.AnimationState.Running; // set our animation to running
+                }
+                
                 CurrentTargetPosition = currentSoccerBall.position;
                 Vector3 targetPosition = new Vector3(CurrentTargetPosition.x, transform.position.y, CurrentTargetPosition.z); //the position we want to move towards.
                 Vector3 nextMovePosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime * 1.5f); // the amount we should move towards that positiion
@@ -130,6 +141,12 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
+                // here we should be running 
+                if (animationHandler.CurrentState != AnimationHandler.AnimationState.Walking)
+                {
+                    animationHandler.CurrentState = AnimationHandler.AnimationState.Walking; // set our animation to walking
+                }
+
                 Vector3 targetPosition = new Vector3(CurrentTargetPosition.x, transform.position.y, CurrentTargetPosition.z); //the position we want to move towards.
                 Vector3 nextMovePosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime); // the amount we should move towards that positiion
                 rigidBody.MovePosition(nextMovePosition);
@@ -141,6 +158,12 @@ public class CharacterController : MonoBehaviour
             if (currentSoccerBall != null)
             {
                 currentCharacterState = CharacterStates.Playing; // Start playing with the ball
+                 // here we should be running 
+                if(animationHandler.CurrentState != AnimationHandler.AnimationState.Running)
+                {
+                    animationHandler.CurrentState = AnimationHandler.AnimationState.Running; // set our animation to running
+                    currentTimeTillPassingAnimationPlays = Time.time + passingAnimationDelay; // sets the time till until we can play the animation
+                }
                 
                 
             }
@@ -167,6 +190,12 @@ public class CharacterController : MonoBehaviour
                 CurrentTargetPosition = gameManager.ReturnRandomPositionOnField();
                 currentCharacterState = CharacterStates.Roaming; // start roaming again
             }
+            // here we should be Idle 
+            if (animationHandler.CurrentState != AnimationHandler.AnimationState.Idle)
+            {
+                animationHandler.CurrentState = AnimationHandler.AnimationState.Idle; // set our animation to Idle
+            }
+
         }
     }
 
@@ -181,6 +210,14 @@ public class CharacterController : MonoBehaviour
             // We should be fleeing
             currentCharacterState = CharacterStates.Fleeing;
             gameManager.RunningAwayFromPlayer(true); // we are running away from player
+
+            // here we should be running 
+            if (animationHandler.CurrentState != AnimationHandler.AnimationState.Running)
+            {
+                animationHandler.CurrentState = AnimationHandler.AnimationState.Running; // set our animation to running
+            }
+
+
         }
         else if(currentCharacterState == CharacterStates.Fleeing && gameManager.IsPlayerTooCloseToCharacter(transform, distanceThresholdOfPlayer))
         {
@@ -204,6 +241,10 @@ public class CharacterController : MonoBehaviour
             currentCharacterState = CharacterStates.Roaming;
             currentTargetPosition = gameManager.ReturnRandomPositionOnField();
             gameManager.RunningAwayFromPlayer(false); // stop running away from player.
+
+            
+
+
         }
     }
 
@@ -214,10 +255,22 @@ public class CharacterController : MonoBehaviour
         // we want to kick the ball because we are close enough
         if(currentCharacterState == CharacterStates.Playing)
         {
-            KickSoccerBall(); // kick soccer ball
-            // set our target to the soccer ball again and start moving towards the ball again
-            CurrentTargetPosition = currentSoccerBall.position;
-            currentCharacterState = CharacterStates.Roaming;
+            // here we should be running 
+            if (animationHandler.CurrentState != AnimationHandler.AnimationState.Passing)
+            {
+                animationHandler.CurrentState = AnimationHandler.AnimationState.Passing; // set our animation to running
+                
+            }
+            
+            if (Time.time > currentTimeTillPassingAnimationPlays)
+
+
+            {
+                KickSoccerBall(); // kick soccer ball
+                                  // set our target to the soccer ball again and start moving towards the ball again
+                CurrentTargetPosition = currentSoccerBall.position;
+                currentCharacterState = CharacterStates.Roaming;
+            }
         }
     }
 
@@ -233,8 +286,15 @@ public class CharacterController : MonoBehaviour
             currentCharacterState = CharacterStates.Waving;
             currentWaveTime = Time.time + waveTime; // setup the time we should be waving until.
             CurrentTargetPosition = ReturnCharacterTransformToWaveAt().position; // Set the current target position to the closest transform, so that way we also rotate towards it.
+
+            // here we should be Waving 
+            if (animationHandler.CurrentState != AnimationHandler.AnimationState.Waving)
+            {
+                animationHandler.CurrentState = AnimationHandler.AnimationState.Waving; // set our animation to Waving
+            }
+
         }
-        if(currentCharacterState == CharacterStates.Waving && Time.time > currentWaveTime)
+        if (currentCharacterState == CharacterStates.Waving && Time.time > currentWaveTime)
         {
             // Stop waving.
             CurrentTargetPosition = previousTargetPosition; // Resume moving towards our target position.
